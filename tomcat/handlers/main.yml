@@ -1,4 +1,4 @@
 ---
 # handlers file for deploywar
-- name: restart tomcat
-    service: name=tomcat9 state=restarted
+- name: restart tomcat 
+  service: name=tomcat9 state=restarted
