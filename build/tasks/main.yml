@@ -1,0 +1,25 @@
+---
+# Download project, build war, deploy on tomcat server
+- name: Install packages
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+       - git
+       - maven
+
+- name: Download boxfuse
+  git:
+    repo: https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+    dest: /tmp/boxfuse
+
+- name: Run mvn clean in work folder
+  shell:
+    cmd: mvn clean package
+    chdir: /tmp/boxfuse
+
+- name: Synchronize boxfuse folder on build host with webapps folder on prod host
+  synchronize:
+    mode: pull
+    src: /tmp/boxfuse/target/hello-1.0.war
+    dest: /var/lib/tomcat9/webapps/
+  delegate_to: "{{ groups['prod'][0] }}"
+

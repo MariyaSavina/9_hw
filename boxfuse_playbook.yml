@@ -1,0 +1,16 @@
+---
+- name: Install Tomcat
+  hosts: prod
+  become: yes
+
+  roles:
+   - common
+   - tomcat
+
+- name: Download boxfuse and build war
+  hosts: build
+  become: yes
+
+  roles:
+   - common
+   - build
